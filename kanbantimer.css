@@ -1,0 +1,14 @@
+progress {
+  background-color: #f3f3f3;
+  border: 0;
+  height: 50px;
+  width: 90%;
+  border-radius: 9px;
+}
+
+.timerLabel {
+    font-family: "Arial";
+    position: relative;
+    left: -100px;
+    font-size: large;
+}
