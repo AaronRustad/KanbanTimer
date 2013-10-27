@@ -15,10 +15,10 @@
     playButton  = $('button.play');
     stopButton  = $('button.stop');
 
+    // Setup event handlers
     timeButtons.click(handleTimeSelection);
-
-    playButton.click(play);
-    stopButton.click(stop);
+    playButton.click(handleTimerState);
+    stopButton.click(handleTimerState);
     gapi.hangout.data.onStateChanged.add( handleStateChange );
   }
 
@@ -27,15 +27,13 @@
     var currentTime  = parseInt(gapi.hangout.data.getValue('currentTime'));
     var timerState   = gapi.hangout.data.getValue('timerState');
 
-    adjustTimer(currentTime, selectedTime);
-
     switch (timerState) {
       case 'playing':
         startTimer();
         break;
 
       case 'resetting':
-        adjustTimer('0', selectedTime);
+        currentTime = '0';
         stopTimer();
         break;
 
@@ -43,11 +41,13 @@
         stopTimer();
         break;
     }
+    adjustTimer(currentTime, selectedTime);
   }; 
 
   function adjustTimer(currentTime, selectedTime) {
     timerBar.attr('max', selectedTime);
     timerBar.attr('value', currentTime);
+    timeButtons.removeAttr('disabled').filter("[data-seconds='" + selectedTime + "']").attr('disabled', 'disabled');
   };
 
   function handleTimeSelection(event) {
@@ -57,32 +57,29 @@
                                   });
   };
 
-  function play() {
-    timeButtons.attr('disabled', 'disabled');
-    playButton.attr('disabled', 'disabled');
-    stopButton.removeAttr('disabled');
+  function handleTimerState(event) {
+    var state = $(this).hasClass('play') ? 'playing' : 'stopped';
 
-    gapi.hangout.data.submitDelta({'timerState'    : 'playing',
+
+    gapi.hangout.data.submitDelta({'timerState'    : state,
                                    'currentTime'   : timerBar.attr('value')
                                   });
-  };
-
-  function stop() {
-    gapi.hangout.data.submitDelta({'timerState'   : 'stopped',
-                                   'currentTime'   : timerBar.attr('value')
-                                  });
-
-    playButton.removeAttr('disabled');
-    stopButton.attr('disabled', 'disabled');
-    timeButtons.removeAttr('disabled');
   };
 
   function startTimer() {
     timer = setInterval(tick, 100);
+
+    timeButtons.attr('disabled', 'disabled');
+    playButton.attr('disabled', 'disabled');
+    stopButton.removeAttr('disabled');
   };
 
   function stopTimer() {
     window.clearInterval(timer);
+
+    playButton.removeAttr('disabled');
+    stopButton.attr('disabled', 'disabled');
+    timeButtons.removeAttr('disabled');
   };
 
   function tick() {
