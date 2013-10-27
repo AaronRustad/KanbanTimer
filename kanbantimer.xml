@@ -9,11 +9,11 @@
 
 <html>
   <head>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script> 
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script> 
     <script type="text/javascript" src="//plus.google.com/hangouts/_/api/v1/hangout.js"></script>
+    <script type="text/javascript" src="kanbantimer.js"></script>
 
-    <script type="text/javascript" src="https://s3.amazonaws.com/hangout.anassina.com/kanbantimer.js"></script>
-    <link href="https://s3.amazonaws.com/hangout.anassina.com/kanbantimer.css" media="all" rel="stylesheet" />
+    <link href="kanbantimer.css" media="all" rel="stylesheet" />
   </head>
 
   <body>
